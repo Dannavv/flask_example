@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template
+from flask import render_template, request
 from utils.pipeline_utils import recommend_nearby_apartments, load_split_pickle, load_pipeline, make_prediction
 import pandas as pd
 
@@ -7,8 +7,48 @@ import pandas as pd
 def home():
     return render_template('index.html')
 
-@app.route('/predict')
+@app.route('/predict', methods=['GET', 'POST'])
 def predict():
+    if request.method == 'POST':
+        # Load the pipeline and necessary data
+        merged_file = load_split_pickle('pickles')
+        pipeline = load_pipeline(merged_file)
+
+        # Extract form data and create a DataFrame
+        input_data = pd.DataFrame({
+            'property_type': [request.form['property_type']],
+            'sector': [request.form['sector']],
+            'bedRoom': [float(request.form['bedRoom'])],
+            'bathroom': [float(request.form['bathroom'])],
+            'balcony': [request.form['balcony']],
+            'agePossession': [request.form['agePossession']],
+            'built_up_area': [float(request.form['built_up_area'])],
+            'servant room': [float(request.form['servant_room'])],
+            'store room': [float(request.form['store_room'])],
+            'furnishing_type': [request.form['furnishing_type']],
+            'luxury_category': [request.form['luxury_category']],
+            'floor_category': [request.form['floor_category']],
+        })
+
+        print(input_data.head())
+
+        try:
+            # Make prediction using the pipeline
+            lower, upper = make_prediction(pipeline, input_data)
+            # Render the result on a template (you can create a new one or reuse)
+            if lower and upper:
+                print(f"🏷️ Estimated Price Range: ₹ {lower} Cr – ₹ {upper} Cr")
+                return render_template('predict_test.html', lower=lower, upper=upper)
+            return render_template('predict_test.html', lower="loading", upper="loading")
+        except Exception as e:
+            error_message = str(e)
+            return render_template('predict_test.html', lower=error_message)
+
+    # If GET request, render the form
+    return render_template('predict.html')
+
+@app.route('/predict_test')
+def predict_test():
     merged_file = load_split_pickle('pickles')
     pipeline = load_pipeline(merged_file)
 
@@ -33,7 +73,7 @@ def predict():
     except Exception as e:
         print("❌ Error:", e)
     
-    return render_template('predict.html', lower=lower, upper=upper)
+    return render_template('predict_test.html', lower=lower, upper=upper)
 
 
 @app.route('/recommend')

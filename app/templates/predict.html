@@ -1,14 +1,200 @@
-<!-- filepath: /home/thearpit/Desktop/projects/flask_example/app/templates/page1.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 1</title>
+    <title>House Price Prediction</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+        }
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background: white;
+        }
+        .card-header {
+            background: linear-gradient(to right, #007bff, #00b7ff);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-bottom: none;
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #333;
+        }
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #ced4da;
+            transition: border-color 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #007bff, #00b7ff);
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            transition: transform 0.2s ease, background 0.3s ease;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #0069d9, #0096cc);
+            transform: translateY(-2px);
+        }
+        .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #007bff;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+        .intro-text {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #555;
+        }
+    </style>
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <h1>prediction</h1>
-    <p>{{ lower }}</p>
-    <p>{{ upper }}</p>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h2 class="mb-0">House Price Prediction Tool</h2>
+            <p class="mb-0">Enter property details to get an accurate price estimate</p>
+        </div>
+        <div class="card-body">
+            <div class="intro-text">
+                Welcome to our House Price Prediction Tool. Fill in the details of the property you're interested in, and we'll provide an estimated market value based on the latest data and trends.
+            </div>
+            <form method="POST" action="{{ url_for('predict') }}">
+                <!-- Property Basics Section -->
+                <div class="section-title">Property Basics</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Property Type</label>
+                        <select class="form-select" name="property_type" required>
+                            <option value="flat">Flat</option>
+                            <option value="house">House</option>
+                            <option value="villa">Villa</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Sector/Location</label>
+                        <input type="text" class="form-control" name="sector" value="sector 36" placeholder="e.g., Sector 36" required>
+                    </div>
+                </div>
+
+                <!-- Property Specifications Section -->
+                <div class="section-title">Property Specifications</div>
+                               <div class="row">
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Bedrooms</label>
+                        <input type="number" class="form-control" name="bedRoom" value="3" min="1" placeholder="e.g., 3" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Bathrooms</label>
+                        <input type="number" class="form-control" name="bathroom" value="2" min="1" placeholder="e.g., 2" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Balcony</label>
+                        <select class="form-select" name="balcony" required>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2" selected>2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Built Up Area (sq ft)</label>
+                        <input type="number" class="form-control" name="built_up_area" value="850" min="100" placeholder="e.g., 850" required>
+                    </div>
+                </div>
+
+                <!-- Additional Features Section -->
+                <div class="section-title">Additional Features</div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Age of Possession</label>
+                        <select class="form-select" name="agePossession" required>
+                            <option value="New Property">New Property</option>
+                            <option value="Resale">Resale</option>
+                            <option value="Under Construction">Under Construction</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Servant Room</label>
+                        <input type="number" class="form-control" name="servant_room" value="0" min="0" placeholder="e.g., 0" required>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label class="form-label">Store Room</label>
+                        <input type="number" class="form-control" name="store_room" value="0" min="0" placeholder="e.g., 0" required>
+                    </div>
+                </div>
+
+                <!-- Property Quality Section -->
+                <div class="section-title">Property Quality & Amenities</div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Furnishing Type</label>
+                        <select class="form-select" name="furnishing_type" required>
+                            <option value="unfurnished">Unfurnished</option>
+                            <option value="semi-furnished">Semi-Furnished</option>
+                            <option value="fully-furnished">Fully-Furnished</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Luxury Category</label>
+                        <select class="form-select" name="luxury_category" required>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Floor Category</label>
+                        <select class="form-select" name="floor_category" required>
+                            <option value="Low Floor">Low Floor</option>
+                            <option value="Middle Floor">Middle Floor</option>
+                            <option value="High Floor">High Floor</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary">Get Price Prediction</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap 5.3.0 JS Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
