@@ -3,9 +3,180 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Flask Example</title>
+    <title>House Tools - Home</title>
+    <!-- Bootstrap 5.3.0 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts for better typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Custom CSS for additional styling -->
+    <style>
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .navbar {
+            background: linear-gradient(to right, #007bff, #00b7ff);
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .navbar-brand {
+            font-size: 28px;
+            font-weight: 700;
+            color: white !important;
+            margin-left: 20px;
+            letter-spacing: 1.5px;
+        }
+        .header-section {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 80px 60px;
+            color: #333;
+            background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80') no-repeat right center;
+            background-size: cover;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            margin: 40px 20px -20px 20px;
+        }
+        .header-text {
+            max-width: 50%;
+            color: #fff;
+        }
+        .header-section h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            color: #007bff;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+        .header-section p {
+            font-size: 20px;
+            margin-bottom: 20px;
+            color: black;
+            line-height: 1.5;
+        }
+        .btn-primary {
+            background: linear-gradient(to right, #007bff, #00b7ff);
+            border: none;
+            padding: 12px 30px;
+            font-size: 18px;
+            border-radius: 10px;
+            color: white;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 8px 20px rgba(0,123,255,0.3);
+        }
+        .btn-primary:hover {
+            background: linear-gradient(to right, #0056b3, #0096cc);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(0,86,179,0.5);
+        }
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+            padding: 40px 20px;
+            margin: 0 20px 30px 20px;
+        }
+        .feature-card {
+            background: white;
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+        .feature-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+        .feature-card p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .footer {
+            background: #e9ecef;
+            text-align: center;
+            padding: 25px 0;
+            font-size: 16px;
+            color: #6c757d;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+        }
+        @media (max-width: 768px) {
+            .header-section {
+                flex-direction: column;
+                padding: 40px 20px;
+                background-position: center;
+                text-align: center;
+            }
+            .header-text {
+                max-width: 100%;
+            }
+            .header-section h1 {
+                font-size: 40px;
+            }
+            .features-section {
+                grid-template-columns: 1fr;
+                margin: 0 10px 40px 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome to Flask!</h1>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">House Tools</a>
+        </div>
+    </nav>
+
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="header-text">
+            <h1>Welcome to House Tools</h1>
+            <p>Your one-stop solution for house recommendations, cost predictions, and insightful visualizations.</p>
+            <a href="#" class="btn btn-primary">Get Started</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="feature-card">
+            <h3>House Recommendation</h3>
+            <p>Find the perfect home based on your preferences and needs with our advanced recommendation system.</p>
+        </div>
+        <div class="feature-card">
+            <h3>Cost Prediction</h3>
+            <p>Get accurate price estimates for properties with our data-driven prediction tool.</p>
+            <a href="{{ url_for('predict') }}" class="btn btn-primary">Predict Cost</a>
+        </div>
+        <div class="feature-card">
+            <h3>Data Visualization</h3>
+            <p>Explore housing trends and insights through interactive charts and visualizations.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2025 House Tools. All rights reserved.</p>
+    </footer>
+
+    <!-- Bootstrap 5.3.0 JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
